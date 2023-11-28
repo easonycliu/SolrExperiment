@@ -1,5 +1,7 @@
+#!/bin/bash
+
 set -m
-client_num=2
+client_num=$1
 exp_duration=60
 burst_time=10
 
@@ -13,16 +15,18 @@ touch file_name
 indices=big
 
 for i in $(seq 1 1 $client_num); do
-    python microbenchmark/test_multiclient_search.py $PWD/$file_name $indices &
+    python microbenchmark/test_multiclient_search.py $PWD/$file_name $indices $PWD/${file_name}_${i} &
     sleep 0.1
 done
 
-sleep 50
+sleep 10
 
 for j in $(seq 1 1 $exp_duration); do
-    if [[ "$j" == "$burst_time" ]]; then
-        echo $j
-        curl -X GET -H "Content-Type: application/json" -d @query/boolean_search.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id&queryID=$query_id" | grep numFound &
+    if [[ "$3" != "normal" ]]; then
+        if [[ "$j" == "$burst_time" ]]; then
+            echo $j
+            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id&queryID=$query_id" | grep numFound &
+        fi
     fi
     # if [[ "$j" == "$cancel_time" ]]; then
     #     echo $j
@@ -36,6 +40,10 @@ done
 
 kill -2 $(ps | grep python | awk '{print $1}')
 
-python utils/data_read_and_draw.py $PWD/$file_name $client_num
+python utils/data_read_and_draw.py $PWD/$file_name $client_num $PWD/${2}_throughput
+echo Latency > $PWD/${2}_latency
+for i in $(seq 1 1 $client_num); do
+    cat $PWD/${file_name}_${i} >> $PWD/${2}_latency
+done
 
-rm -f $file_name
+rm -f ${file_name}*

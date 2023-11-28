@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -m
 client_num=8
 exp_duration=60

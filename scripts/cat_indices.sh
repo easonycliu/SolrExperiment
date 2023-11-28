@@ -1,3 +1,5 @@
+#!/bin/bash
+
 HOST=http://localhost:8983
 
 collections=$1
@@ -5,7 +7,7 @@ if [ -z "$collections" ]; then
     collections=$(curl -s -X GET $HOST/api/collections | awk -F '[\[\]]' '{print $2}' | sed "s/\"//g")
 fi
 collections=$(echo "$collections" | tr "," " ")
-collections=($collections)
+collections=(big field-1000 field-10000)
 
 echo -e "indice\t\tcount"
 for collection in ${collections[*]}; do
