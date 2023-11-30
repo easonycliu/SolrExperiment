@@ -10,7 +10,7 @@ query_id_1=1
 query_id_2=2
 
 file_name=tmp_$(date +%Y%m%d%H%M%S)
-touch file_name
+touch $file_name
 
 indices=big
 
