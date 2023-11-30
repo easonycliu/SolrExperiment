@@ -3,7 +3,8 @@ __pycache__
 /response
 /fig
 /data
-/query
+/query/boolean_search_1.json
+/query/boolean_search_2.json
 /cluster/data
 /cluster/log
 /.cache

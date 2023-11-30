@@ -31,13 +31,20 @@ signal.signal(signal.SIGUSR1, signal_handler)
 
 url = "{}/solr/{}/query?q=*:*&rows=0&stats=true&stats.field={}".format(HOST, indices, field)
 
+latency_list = []
 with httpx.Client(timeout=300) as client:
     while True:
         try:
+            start = time.time_ns()
             response = client.post(url, headers={"Content-Type": "application/json"})
+            latency_list.append(time.time_ns() - start)
             throughput += 1
         except KeyboardInterrupt:
             print("Recieve keyboard interrupt from user, break")
+            latency_file = open(sys.argv[4], "w")
+            for latency in latency_list[1:]:
+                latency_file.write(str(latency) + "\n")
+            latency_file.close()
             break
         except KeyError:
             print("A keyerror occured!")
