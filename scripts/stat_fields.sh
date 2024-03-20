@@ -37,7 +37,7 @@ for j in $(seq 1 1 $exp_duration); do
     if [[ "$3" != "normal" ]]; then
         if [[ "$j" == "$burst_time_1" ]]; then
             echo $j
-            curl -d POST -d @$req_file_name "$url" | tail -n 10 &
+            curl -d POST -d @$req_file_name "$url" | tail -n 20 &
         fi
         if [[ "$j" == "$interfere_time" ]]; then
             echo $j
@@ -58,3 +58,5 @@ done
 
 rm -f $req_file_name
 rm -f $file_name
+
+sleep 120

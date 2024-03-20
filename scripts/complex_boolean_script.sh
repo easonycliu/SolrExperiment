@@ -28,7 +28,7 @@ for j in $(seq 1 1 $exp_duration); do
     if [[ "$3" != "normal" ]]; then
         if [[ "$j" == "$burst_time_1" ]]; then
             echo $j
-            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_2.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1" | grep numFound &
+            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_2.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1" | tail -n 20 &
         fi
         if [[ "$j" == "$burst_time_2" ]]; then
             echo $j
@@ -54,3 +54,7 @@ for i in $(seq 1 1 $client_num); do
 done
 
 rm -f ${file_name}*
+
+curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_2.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1" | tail -n 20 &
+
+sleep 120
