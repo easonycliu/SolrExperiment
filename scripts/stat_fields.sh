@@ -16,8 +16,8 @@ file_name=tmp_$curr_time
 req_file_name=req_$curr_time
 touch $file_name
 
-indices=field-10000
-field_num=10000
+indices=field-1000
+field_num=1000
 
 url="http://localhost:8983/solr/$indices/query?q=*:*&rows=0&canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1"
 echo "&stats=true" > $req_file_name
