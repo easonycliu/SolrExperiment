@@ -5,11 +5,18 @@ __pycache__
 /data
 /query/boolean_search_1.json
 /query/boolean_search_2.json
-/cluster/data
-/cluster/log
+/cluster/data/*
+/cluster/log/*
 /.cache
 /.config
 
 .bash_history
 .python_history
 .viminfo
+
+!/cluster/data/single_node/
+/cluster/data/single_node/*
+!/cluster/log/single_node/
+/cluster/log/single_node/*
+
+!.gitkeep
