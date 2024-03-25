@@ -16,8 +16,8 @@ file_name=tmp_$curr_time
 req_file_name=req_$curr_time
 touch $file_name
 
-indices=field-1000
-field_num=1000
+indices=field-10000
+field_num=10000
 
 url="http://localhost:8983/solr/$indices/query?q=*:*&rows=0&canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1"
 echo "&stats=true" > $req_file_name
@@ -42,7 +42,7 @@ for j in $(seq 1 1 $exp_duration); do
         if [[ "$j" == "$interfere_time" ]]; then
             echo $j
             # curl -d POST -d @$req_file_name "$url" | tail -n 10 &
-            # curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_interfere.json "http://localhost:8983/solr/big/query?canCancel=true&queryUUID=$query_id_2&queryID=$query_id_2" | grep numFound &
+            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_interfere.json "http://localhost:8983/solr/big/query?canCancel=true&queryUUID=$query_id_2&queryID=$query_id_2" | grep numFound &
         fi
     fi
     kill -10 $(ps | grep python | awk '{print $1}')
