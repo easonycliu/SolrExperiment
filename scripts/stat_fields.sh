@@ -41,7 +41,7 @@ for j in $(seq 1 1 $exp_duration); do
         fi
         if [[ "$j" == "$interfere_time" ]]; then
             echo $j
-            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_1.json "http://localhost:8983/solr/big/query?canCancel=true&queryUUID=$query_id_2&queryID=$query_id_2" | grep numFound &
+            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_interfere.json "http://localhost:8983/solr/big/query?canCancel=true&queryUUID=$query_id_2&queryID=$query_id_2" | grep numFound &
         fi
     fi
     kill -10 $(ps | grep python | awk '{print $1}')
