@@ -41,10 +41,10 @@ with httpx.Client(timeout=300) as client:
         try:
             url = "{}/solr/{}/query?q=content:{}&canCancel=true".format(HOST, indices, word_creator.random_word())
             start = time.time_ns()
-            start_us = start * 1000
+            start_us = int(start / 1000)
             response = client.post(url, headers={"Content-Type": "application/json"})
             end = time.time_ns()
-            end_us = end * 1000
+            end_us = int(end / 1000)
             latency_list.append(end - start)
             if log_for_parties is not None:
                 with open(log_for_parties, "w") as f:
