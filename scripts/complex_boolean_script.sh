@@ -16,7 +16,7 @@ indices=big
 
 baseline=echo $4 | awk -F: '{print $1}'
 baseline_info=($(echo $4 | awk -F: '{$1=""; print}'))
-baseline_info_len=echo ${baseline_info[@]} | wc -w
+baseline_info_len=$(echo ${baseline_info[@]} | wc -w)
 
 curl -X GET "http://localhost:8983/solr/admin/info/logging?set=root:WARN" | tail -n 20
 
