@@ -14,10 +14,14 @@ touch $file_name
 
 indices=big
 
+baseline=echo $4 | awk -F: '{print $1}'
+baseline_info=($(echo $4 | awk -F: '{$1=""; print}'))
+baseline_info_len=echo ${baseline_info[@]} | wc -w
+
 curl -X GET "http://localhost:8983/solr/admin/info/logging?set=root:WARN" | tail -n 20
 
 for i in $(seq 1 1 $client_num); do
-    python microbenchmark/test_multiclient_search.py $PWD/$file_name $indices $PWD/${file_name}_${i} &
+	python microbenchmark/test_multiclient_search.py $PWD/$file_name $indices $PWD/${file_name}_${i} $PWD/${baseline_info[$(( (i - 1) % baseline_info_len ))]} &
     sleep 0.1
 done
 
