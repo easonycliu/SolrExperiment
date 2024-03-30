@@ -19,6 +19,10 @@ touch $file_name
 indices=field-10000
 field_num=10000
 
+baseline=echo $4 | awk -F: '{print $1}'
+baseline_info=($(echo $4 | awk -F: '{$1=""; print}'))
+baseline_info_len=$(echo ${baseline_info[@]} | wc -w)
+
 url="http://localhost:8983/solr/$indices/query?q=*:*&rows=0&canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1"
 echo "&stats=true" > $req_file_name
 for i in $(seq 0 1 $(($field_num - 1))); do
@@ -26,7 +30,7 @@ for i in $(seq 0 1 $(($field_num - 1))); do
 done
 
 for i in $(seq 1 1 $client_num); do
-    python microbenchmark/test_multiclient_stat.py $PWD/$file_name $indices test0 $PWD/${file_name}_${i} &
+    python microbenchmark/test_multiclient_stat.py $PWD/$file_name $indices test0 $PWD/${file_name}_${i} $PWD/${baseline_info[$(( (i - 1) % baseline_info_len ))]} &
     sleep 0.1
 done
 
@@ -37,7 +41,10 @@ for j in $(seq 1 1 $exp_duration); do
     if [[ "$3" != "normal" ]]; then
         if [[ "$j" == "$burst_time_1" ]]; then
             echo $j
+            start_us=$(date +"%s%6N")
             curl -d POST -d @$req_file_name "$url" | tail -n 20 &
+            end_us=$(date +"%s%6N")
+            echo $(( end_us - start_us )) >> ${baseline_info[0]}
         fi
         if [[ "$j" == "$interfere_time" ]]; then
             echo $j

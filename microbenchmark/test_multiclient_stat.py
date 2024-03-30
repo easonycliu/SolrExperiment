@@ -19,6 +19,10 @@ file_name = sys.argv[1]
 indices = sys.argv[2]
 field = sys.argv[3]
 
+log_for_parties = None
+if len(sys.argv) > 5:
+    log_for_parties = sys.argv[5]
+
 throughput = 0
 def signal_handler(signalnum, frame):
     global throughput
@@ -36,8 +40,14 @@ with httpx.Client(timeout=300) as client:
     while True:
         try:
             start = time.time_ns()
+            start_us = int(start / 1000)
             response = client.post(url, headers={"Content-Type": "application/json"})
-            latency_list.append(time.time_ns() - start)
+            end = time.time_ns()
+            end_us = int(end / 1000)
+            latency_list.append(end - start)
+            if log_for_parties is not None:
+                with open(log_for_parties, "a") as f:
+                    f.write("{}".format(end_us - start_us))
             throughput += 1
         except KeyboardInterrupt:
             print("Recieve keyboard interrupt from user, break")
