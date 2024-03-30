@@ -52,7 +52,7 @@ with httpx.Client(timeout=300) as client:
             throughput += 1
         except KeyboardInterrupt:
             print("Recieve keyboard interrupt from user, break")
-            latency_file = open(sys.argv[3], "w")
+            latency_file = open(sys.argv[3], "a")
             for latency in latency_list[1:]:
                 latency_file.write(str(latency) + "\n")
             latency_file.close()
