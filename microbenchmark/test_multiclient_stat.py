@@ -47,7 +47,7 @@ with httpx.Client(timeout=300) as client:
             latency_list.append(end - start)
             if log_for_parties is not None:
                 with open(log_for_parties, "a") as f:
-                    f.write("{}".format(end_us - start_us))
+                    f.write("{}\n".format(end_us - start_us))
             throughput += 1
         except KeyboardInterrupt:
             print("Recieve keyboard interrupt from user, break")

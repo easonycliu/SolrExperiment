@@ -14,7 +14,7 @@ touch $file_name
 
 indices=big
 
-baseline=echo $4 | awk -F: '{print $1}'
+baseline=$(echo $4 | awk -F: '{print $1}')
 baseline_info=($(echo $4 | awk -F: '{$1=""; print}'))
 baseline_info_len=$(echo ${baseline_info[@]} | wc -w)
 
