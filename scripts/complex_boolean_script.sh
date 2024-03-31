@@ -18,15 +18,17 @@ baseline=$(echo $4 | awk -F: '{print $1}')
 baseline_info=($(echo $4 | awk -F: '{$1=""; print}'))
 baseline_info_len=$(echo ${baseline_info[@]} | wc -w)
 
-baseline_output=
-if $(( baseline_info_len > 0 )); then
-	baseline_output=$PWD/${baseline_info[$(( (i - 1) % baseline_info_len ))]}
+baseline_outputs=()
+if [[ $baseline_info_len > 0 ]]; then
+	for i in $(seq 1 1 $client_num); do
+		baseline_outputs+=($PWD/${baseline_info[$(( (i - 1) % baseline_info_len ))]})
+	done
 fi
 
 curl -X GET "http://localhost:8983/solr/admin/info/logging?set=root:WARN" | tail -n 20
 
 for i in $(seq 1 1 $client_num); do
-    python microbenchmark/test_multiclient_search.py $PWD/$file_name $indices $PWD/${file_name}_${i} $baseline_output &
+    python microbenchmark/test_multiclient_search.py $PWD/$file_name $indices $PWD/${file_name}_${i} ${baseline_outputs[$i]} &
     sleep 0.1
 done
 

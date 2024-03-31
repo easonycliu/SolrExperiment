@@ -29,13 +29,15 @@ for i in $(seq 0 1 $(($field_num - 1))); do
     echo "&stats.field=test$i" >> $req_file_name
 done
 
-baseline_output=
-if $(( baseline_info_len > 0 )); then
-	baseline_output=$PWD/${baseline_info[$(( (i - 1) % baseline_info_len ))]}
+baseline_outputs=()
+if [[ $baseline_info_len > 0 ]]; then
+	for i in $(seq 1 1 $client_num); do
+		baseline_outputs+=($PWD/${baseline_info[$(( (i - 1) % baseline_info_len ))]})
+	done
 fi
 
 for i in $(seq 1 1 $client_num); do
-    python microbenchmark/test_multiclient_stat.py $PWD/$file_name $indices test0 $PWD/${file_name}_${i} $baseline_output &
+    python microbenchmark/test_multiclient_stat.py $PWD/$file_name $indices test0 $PWD/${file_name}_${i} ${baseline_outputs[$i]} &
     sleep 0.1
 done
 
