@@ -69,6 +69,4 @@ done
 
 rm -f ${file_name}*
 
-curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_2.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1" | tail -n 20 &
-
 sleep 120
