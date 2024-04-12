@@ -3,7 +3,7 @@
 set -m
 client_num=5
 exp_duration=30
-indices=big
+indices=field-1000
 
 curl -X GET "http://localhost:8983/solr/admin/info/logging?set=root:WARN" | tail -n 20
 
