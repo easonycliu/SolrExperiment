@@ -28,7 +28,7 @@ fi
 curl -X GET "http://localhost:8983/solr/admin/info/logging?set=root:WARN" | tail -n 20
 
 for i in $(seq 1 1 $client_num); do
-    python microbenchmark/test_multiclient_search.py $PWD/$file_name $indices $PWD/${file_name}_${i} ${baseline_outputs[$i]} &
+    python microbenchmark/test_multiclient_search.py $PWD/$file_name field-1000 $PWD/${file_name}_${i} ${baseline_outputs[$i]} &
     sleep 0.1
 done
 
@@ -40,7 +40,7 @@ for j in $(seq 1 1 $exp_duration); do
         if [[ "$j" == "$burst_time_1" ]]; then
             echo $j
             start_us=$(date +"%s%6N")
-            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_2.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1" | tail -n 20 &
+            curl -X GET -H "Content-Type: application/json" -d @query/boolean_search_1.json "http://localhost:8983/solr/$indices/query?canCancel=true&queryUUID=$query_id_1&queryID=$query_id_1" | tail -n 20 &
             end_us=$(date +"%s%6N")
             echo $(( end_us - start_us )) >> ${baseline_info[0]}
         fi

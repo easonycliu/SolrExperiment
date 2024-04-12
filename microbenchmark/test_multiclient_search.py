@@ -39,7 +39,7 @@ latency_list = []
 with httpx.Client(timeout=300) as client:
     while True:
         try:
-            url = "{}/solr/{}/query?q=content:{}&canCancel=true".format(HOST, indices, word_creator.random_word())
+            url = "{}/solr/{}/query?q=test0:{}&canCancel=true".format(HOST, indices, word_creator.random_word())
             start = time.time_ns()
             start_us = int(start / 1000)
             response = client.post(url, headers={"Content-Type": "application/json"})

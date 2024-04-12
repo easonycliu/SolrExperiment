@@ -23,21 +23,12 @@ if __name__ == "__main__":
     file_name = sys.argv[2]
     port = 8983
     HOST = "http://localhost:{}".format(port)
-    indices = "news"
-    for i in range(50):
-        indices += ",test{}".format(i)
 
     query = {
         "query": {
             "bool": {
                 "should": [
                 ],
-                "must": [
-                    
-                ],
-                "must_not": [
-                    
-                ]
             }
         }
     }
