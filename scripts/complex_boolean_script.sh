@@ -43,7 +43,7 @@ for j in $(seq 1 1 $exp_duration); do
     if [[ "$3" != "normal" ]]; then
 		if [[ "$(((j - burst_time_1) % abs_interval))" == "0" ]]; then
             echo $j
-			bash -c 'start_us=$(date +"%s%6N") && curl -X GET -H "Content-Type:application/json" --data-binary @'${PWD}'/query/boolean_search_1.json http://localhost:8983/solr/'$indices'/query?canCancel=true&queryUUID='$query_id_1'&queryID='$query_id_1' | tail -n 20 && end_us=$(date +"%s%6N") && echo $(( end_us - start_us )) >> '${baseline_info[0]}'' &
+			bash -c 'start_us=$(date +"%s%6N") && curl -X GET -H "Content-Type:application/json" --data-binary @'${PWD}'/query/boolean_search_1.json "http://localhost:8983/solr/'$indices'/query?canCancel=true&queryUUID='$query_id_1'&queryID='$query_id_1'" | tail -n 20 && end_us=$(date +"%s%6N") && echo $(( end_us - start_us )) >> '${baseline_info[0]}'' &
         fi
     fi
     # if [[ "$j" == "$cancel_time" ]]; then
