@@ -4,7 +4,7 @@ set -m
 client_num=$1
 exp_duration=70
 burst_time_1=10
-interfere_time=15
+interfere_time=11
 
 query_id_1=1
 query_id_2=2
